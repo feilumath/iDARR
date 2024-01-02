@@ -1,4 +1,4 @@
-# iDARR: Iterative Regularization with Data-adaptive RKHS Norm
+# iDARR: Iterative Data-Adaptive RKHS Regularization
 
 ## Introduction
 
@@ -20,11 +20,11 @@ iDARR is designed to:
 
 ## Usage
 
-This repo implements iDARR in MATLAB. It uses the L-curve method for early stopping. For 2D image deblurring examples and benchmarking, it uses the [IR Tools](https://link.springer.com/article/10.1007/s11075-018-0570-7) by Silvia Gazzola, Per Christian Hansen, and James G. Nagy.
+This repo implements iDARR in MATLAB. It uses the L-curve method for early stopping. Tests include the Frodholm integral equation and 2D image deblurring. The tests compares the DA-RKHS norm with two widely used L2 and l2 norms, denoted by IR-L2 and IR-l2 respectively. The L-curve method and the image handling tools in nice [IR Tools](https://link.springer.com/article/10.1007/s11075-018-0570-7) by Silvia Gazzola, Per Christian Hansen, and James G. Nagy.
 
 - iDARR_demo.m:  This script provides a quick demonstration on using iDARR to solve discrete problems in the form `Ax = b`. 
 
-- runme_main.m: This script contains the numerical tests on the Fredhold integral equation. It examines the stability of the method in different noise levels. 
+- runme_main.m: This script contains the numerical tests on the Fredhold integral equation. It examines the stability of the method in different noise levels. The tests show that iDARR outperforms IR-L2 and IR-l2.    
 
 - test_deblur.m: This script applies iDARR to 2D image deblurring, showcasing its potential in practical applications. 
 
