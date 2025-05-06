@@ -8,6 +8,9 @@ clc; close all;
 
 m= 500; n = 1000; 
 
+expl_measure = 'L1';  % exploration measure
+% expl_measure = 'L2';  % exploration measure
+
 rng(2024)
 % construct A: ill-conditioned 
 A     = zeros(m,n);   %% We don't use random iid, because it is not ill-conditioned
@@ -30,7 +33,7 @@ b     = b_true + randn(m,1)*norm(b_true)*dx*0.01;
 
 %% iDARR: iterative Data-Adaptive RKHS regularization
 plotON   = 1; 
-[x_reg,res,eta,k_corner] = iDARR_Lcurve(A,b,plotON); 
+[x_reg,res,eta,k_corner] = iDARR_Lcurve(A,b,expl_measure,plotON); 
 
 
 x_lse = lsqminnorm(A,b); 
@@ -45,10 +48,18 @@ legend('True','iDARR','lsqmininorm');
 
 
 
-%% 
-function [x_reg,res,eta,k_corner] = iDARR_Lcurve(A,b,plotON)
+%%-----------------------
+function [x_reg,res,eta,k_corner] = iDARR_Lcurve(A,b,expl_measure,plotON)
 % Exploration measure
-rho      = sum(abs(A),1); rho = rho'/sum(rho); 
+if strcmp(expl_measure, 'L1')
+   rho = sum(abs(A),1); 
+elseif strcmp(expl_measure, 'L2')
+   rho = sum(A.^2,1);
+else
+   error('Wrong exploration measure')
+end
+
+rho = rho'/sum(rho); 
 figure; plot(rho); 
 
 % IR with gGKB  

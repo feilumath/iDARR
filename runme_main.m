@@ -11,8 +11,10 @@ Key: space of identifiability, exploration measure
 clc; close all; clear all;
 add_mypaths_discrete;    % get SAVE_DIR = local dir for saving data
 rng(1)
+
+
 %% Load system settings
-kernel_type = 'poly';    % choose the spectrum decay type: 'exp' or 'poly'
+kernel_type = 'exp';    % choose the spectrum decay type: 'exp' or 'poly'
 sysInfo    = system_settings(kernel_type);
 A     = sysInfo.L_operator;
 xn    = sysInfo.xn;
@@ -24,7 +26,17 @@ dx    = sysInfo.dx;
 method = 'IR';    % choose the regularization method: 'IR' or 'Direct'
 
 %% Get rho and L2(rho) basis matrix B 
-rho = sum(abs(A));  rho = rho/(sum(rho)*dx);  % normalize, does not seem necessary for this example, maybe other examples
+% expl_measure = 'L1';  % exploration measure
+expl_measure = 'L2';  % exploration measure
+if strcmp(expl_measure, 'L1')
+      rho = sum(abs(A),1); 
+elseif strcmp(expl_measure, 'L2')
+      rho = sum(A.^2,1);
+else
+      error('Wrong exploration measure')
+end
+
+rho = rho/(sum(rho)*dx);  % normalize, does not seem necessary for this example, maybe other examples
 figure; % plot the exploration measure 
 plot(xgrid, rho,'linewidth',1); xlabel('u');ylabel('rho');
 B   = diag(rho);

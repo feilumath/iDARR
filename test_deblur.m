@@ -18,6 +18,9 @@ optblur.BC = 'zero';
 nel = 1e-2;  % noise level
 b = PRnoise(b_true, 'gauss', nel);  % Observed Image
 
+expl_measure = 'L1';  % exploration measure
+% expl_measure = 'L2';  % exploration measure
+
 % prepare algorithms
 [m, n] = sizm(A);
 xn = norm(x_true);
@@ -27,7 +30,13 @@ for i = 1:n
     ei = zeros(n,1);
     ei(i) = 1;
     ai = mvp(A, ei);
-    rho(i) = sum(abs(ai));
+    if strcmp(expl_measure, 'L1')
+        rho(i) = sum(abs(ai)); 
+    elseif strcmp(expl_measure, 'L2')
+        rho = sum(ai.^2);
+    else
+        error('Wrong exploration measure')
+    end
 end
 % rho = rho / sum(rho);
 
