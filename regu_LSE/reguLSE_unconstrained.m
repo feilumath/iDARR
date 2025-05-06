@@ -9,7 +9,7 @@ f_true_func = @(x) x.^2;
 f_true = f_true_func(xgrid);
 
 
-figure; plot(xgrid,f_true);%/(dx*sum(f_true))); 
+figure; plot(xgrid,f_true);  %/(dx*sum(f_true))); 
 
 %
 file_str  =['outsideFSOI_',method,kernel_type]; 
